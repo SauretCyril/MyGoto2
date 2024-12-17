@@ -1,0 +1,5 @@
+build/
+dist/
+*.exe
+app.log
+dist/main3.exe
