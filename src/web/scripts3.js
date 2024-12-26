@@ -149,7 +149,16 @@ function loadTableData(callback) {
                         attachmentIcon.style.top = '50%';
                         attachmentIcon.style.transform = 'translateY(-55%)';
                         attachmentIcon.style.zIndex = '1'; // Assure que l'icône est au-dessus du contenu
-                        
+                        attachmentIcon.style.cursor = 'pointer'; // Change cursor on hover
+
+                        // Add onclick event to open the file
+                        attachmentIcon.onclick = () => {
+                            
+                            set_current_row();
+                          
+                            eel.openUrl(fichier_annonce);
+                        };
+
                         // Ajouter l'icône au premier td de la ligne plutôt qu'à la ligne elle-même
                         const firstCell = row.firstChild;
                         if (firstCell) {
@@ -172,8 +181,8 @@ function loadTableData(callback) {
                     contextMenu.dataset.targetRow = row.id;
 
                     document.getElementById('EditRow').onclick = () => {
-                        const rowId = contextMenu.dataset.targetRow;
-                        set_current_row(rowId);
+                        
+                        set_current_row();
                         openEditModal(row.id);
                         contextMenu.style.display = 'none';
                     };
@@ -184,34 +193,17 @@ function loadTableData(callback) {
                         contextMenu.style.display = 'none';
                     }; */
                     document.getElementById('SetCurrentRow').onclick = () => {
-                        const rowId = contextMenu.dataset.targetRow;
-                        set_current_row(rowId);
+                        
                         contextMenu.style.display = 'none';
+                        set_current_row();
                     };
                     document.getElementById('Open').onclick = () => {
-                        
+                        set_current_row();
                         open_dir(filePath);
-                        set_current_row(rowId);
                         //set_current_row(rowId);
                         contextMenu.style.display = 'none';
                     };
-                    // document.getElementById('Question').onclick = () => {
-                    //     const rowId = contextMenu.dataset.targetRow;
-                    //     set_current_row(rowId);
-                    //     const isResq='Ok';
-                    //     let typeQ="pdf";
-                        
-                    //      // Correction ici
-                    //    /* 
-                    //     AIQ(typeQ, fichier_annonce, item);
-                    //     if(item.type_question=="url"){
-                    //         typeQ="url";
-                    //         lien=item.url;
-                    //     } */
-                    //     //alert("Question sur : "+fichier);
-                    //     AIQ(typeQ,fichier,item);
-                    //     contextMenu.style.display = 'none';
-                    // };
+                  
 
 
                     document.getElementById('Delete').onclick = () => {
@@ -573,8 +565,9 @@ function cancelEdit() {
 
 
 
-function set_current_row(rowId) {
+function set_current_row() {
     // Reset the background color of all rows
+    const rowId = contextMenu.dataset.targetRow;
     document.querySelectorAll('#table-body tr').forEach(row => {
         row.style.backgroundColor = ''; // Reset to original color
     });
